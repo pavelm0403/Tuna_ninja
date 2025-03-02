@@ -52,15 +52,11 @@ function preload() {
 }
 
 function setup() {
-  cnv = createCanvas(windowWidth, windowHeight);
+  cnv = createCanvas(800, 635);
   sword = new Sword(color("#FFFFFF"));
   frameRate(60);
   score = 0;
   lives = 3;
-}
-
-function windowResized() {
-  resizeCanvas(windowWidth, windowHeight);
 }
 
 function draw() {
@@ -71,26 +67,27 @@ function draw() {
     game();
   } else {
     // Отображение стартового экрана
-    image(this.foregroundImg, 0, 0, width, height * 0.55);
-    image(this.rollLogo, width * 0.05, height * 0.03, width * 0.45, height * 0.3);
-    image(this.ninjaLogo, width * 0.45, height * 0.15, width * 0.5, height * 0.3);
-    image(this.newGameImg, width * 0.3, height * 0.5, width * 0.25, height * 0.3);
-    image(this.rollImg, width * 0.45, height * 0.65, width * 0.25, height * 0.3);
-  }
+    image(this.foregroundImg, 0, 0, 800, 350);
+    image(this.rollLogo, 40, 20, 358, 195);
+    image(this.ninjaLogo, 360, 90, 400, 195);
+    image(this.newGameImg, 210, 310, 200, 200);
+    image(this.rollImg, 340, 400, 200, 200);
 
-  if (touches.length > 0) {
-    sword.swipe(touches[0].x, touches[0].y);
+    cnv.mouseClicked(check);
   }
+  //     if (timerValue >= 60) {
+  //         text("0:" + timerValue, width / 2, height / 2);
+  //     }
+  //     if (timerValue < 60) {
+  //         text('0:0' + timerValue, width / 2, height / 2);
+  //     }
 }
 
-function touchStarted() {
-  // Проверка начала игры при касании экрана
-  if (!isPlay && touches.length > 0) {
-    let touch = touches[0];
-    if (touch.x > width * 0.4 && touch.x < width * 0.65 && touch.y > height * 0.55 && touch.y < height * 0.85) {
-      start.play();
-      isPlay = true;
-    }
+function check() {
+  // Check for game start
+  if (!isPlay && mouseX > 300 && mouseX < 520 && mouseY > 350 && mouseY < 550) {
+    start.play();
+    isPlay = true;
   }
 }
 
@@ -196,29 +193,26 @@ function drawLives() {
 }
 
 function drawScore() {
-  image(this.scoreImg, 10, 10, 40 * (width / 800), 40 * (height / 635));
+  image(this.scoreImg, 10, 10, 40, 40);
   textAlign(LEFT);
   noStroke();
   fill(255, 147, 21);
-  textSize(50 * (width / 800));
+  textSize(50);
   text(score, 50, 50);
 }
-
 
 function gameOver() {
   noLoop();
   over.play();
   clear();
   background(bg);
-  image(this.gameOverImg, width * 0.2, height * 0.4, width * 0.6, height * 0.15);
+  image(this.gameOverImg, 155, 260, 490, 85);
   lives = 0;
 
-  // Создаем кнопку "Главное меню" с адаптацией под мобильные устройства
+  // Создаем кнопку "Перезапустить"
   let resetButton = createButton("Главное меню");
-  resetButton.position(width * 0.8, height * 0.55);
+  resetButton.position(650, 350);
   resetButton.class('reset-button');
-  resetButton.style('font-size', '24px');
-  resetButton.style('padding', '10px 20px');
   resetButton.mousePressed(resetGame);
 }
 

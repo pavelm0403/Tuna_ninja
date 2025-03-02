@@ -40819,7 +40819,6 @@
               }
 
               function makeHeadTable(options) {
-                // Apple Mac timestamp epoch is 01/01/1904 not 01/01/1970
                 var timestamp = Math.round(new Date().getTime() / 1000) + 2082844800;
                 var createdTimestamp = timestamp;
 
@@ -41199,18 +41198,6 @@
                 151: 'nn'
               };
 
-              // MacOS language ID → MacOS script ID
-              //
-              // Note that the script ID is not sufficient to determine what encoding
-              // to use in TrueType files. For some languages, MacOS used a modification
-              // of a mainstream script. For example, an Icelandic name would be stored
-              // with smRoman in the TrueType naming table, but the actual encoding
-              // is a special Icelandic version of the normal Macintosh Roman encoding.
-              // As another example, Inuktitut uses an 8-bit encoding for Canadian Aboriginal
-              // Syllables but MacOS had run out of available script codes, so this was
-              // done as a (pretty radical) "modification" of Ethiopic.
-              //
-              // http://unicode.org/Public/MAPPINGS/VENDORS/APPLE/Readme.txt
               var macLanguageToScript = {
                 0: 0, // langEnglish → smRoman
                 1: 0, // langFrench → smRoman
@@ -41625,12 +41612,6 @@
                 31: 'x-mac-extarabic' // smExtArabic
               };
 
-              // MacOS language ID → encoding. This table stores the exceptional
-              // cases, which override macScriptEncodings. For writing MacOS naming
-              // tables, we need to emit a MacOS script ID. Therefore, we cannot
-              // merge macScriptEncodings into macLanguageEncodings.
-              //
-              // http://unicode.org/Public/MAPPINGS/VENDORS/APPLE/Readme.txt
               var macLanguageEncodings = {
                 15: 'x-mac-icelandic', // langIcelandic
                 17: 'x-mac-turkish', // langTurkish
@@ -41654,7 +41635,7 @@
                   case 0: // Unicode
                     return utf16;
 
-                  case 1: // Apple Macintosh
+                  case 1:
                     return (
                       macLanguageEncodings[languageID] || macScriptEncodings[encodingID]
                     );
@@ -42596,10 +42577,6 @@
 
               var gsub = { parse: parseGsubTable, make: makeGsubTable };
 
-              // The `GPOS` table contains kerning pairs, among other things.
-
-              // Parse the metadata `meta` table.
-              // https://developer.apple.com/fonts/TrueType-Reference-Manual/RM06/Chap6meta.html
               function parseMetaTable(data, start) {
                 var p = new parse.Parser(data, start);
                 var tableVersion = p.parseULong();
@@ -44242,33 +44219,6 @@
 
               var glyf = { getPath: getPath, parse: parseGlyfTable };
 
-              /* A TrueType font hinting interpreter.
-	*
-	* (c) 2017 Axel Kittenberger
-	*
-	* This interpreter has been implemented according to this documentation:
-	* https://developer.apple.com/fonts/TrueType-Reference-Manual/RM05/Chap5.html
-	*
-	* According to the documentation F24DOT6 values are used for pixels.
-	* That means calculation is 1/64 pixel accurate and uses integer operations.
-	* However, Javascript has floating point operations by default and only
-	* those are available. One could make a case to simulate the 1/64 accuracy
-	* exactly by truncating after every division operation
-	* (for example with << 0) to get pixel exactly results as other TrueType
-	* implementations. It may make sense since some fonts are pixel optimized
-	* by hand using DELTAP instructions. The current implementation doesn't
-	* and rather uses full floating point precision.
-	*
-	* xScale, yScale and rotation is currently ignored.
-	*
-	* A few non-trivial instructions are missing as I didn't encounter yet
-	* a font that used them to test a possible implementation.
-	*
-	* Some fonts seem to use undocumented features regarding the twilight zone.
-	* Only some of them are implemented as they were encountered.
-	*
-	* The exports.DEBUG statements are removed on the minified distribution file.
-	*/
 
               var instructionTable;
               var exec;
@@ -55681,31 +55631,7 @@
            * @chainable
            *
            * @example
-           * <div class="norender notest"><code>
-           * // in the html file:
-           * // &lt;div id="myContainer">&lt;/div>
-           *
-           * // in the js file:
-           * let cnv = createCanvas(100, 100);
-           * cnv.parent('myContainer');
-           * </code></div>
-           * <div class='norender'><code>
-           * let div0 = createDiv('this is the parent');
-           * let div1 = createDiv('this is the child');
-           * div1.parent(div0); // use p5.Element
-           * </code></div>
-           * <div class='norender'><code>
-           * let div0 = createDiv('this is the parent');
-           * div0.id('apples');
-           * let div1 = createDiv('this is the child');
-           * div1.parent('apples'); // use id
-           * </code></div>
-           * <div class='norender notest'><code>
-           * let elt = document.getElementById('myParentDiv');
-           * let div1 = createDiv('this is the child');
-           * div1.parent(elt); // use element from page
-           * </code></div>
-           *
+
            * @alt
            * no display.
            */
@@ -69867,44 +69793,7 @@
             var self = this;
             this.name = filename;
             this.content = '';
-            //Changed to write because it was being overloaded by function below.
-            /**
-             * Writes data to the PrintWriter stream
-             * @method write
-             * @param {Array} data all data to be written by the PrintWriter
-             * @example
-             * <div class="norender notest">
-             * <code>
-             * // creates a file called 'newFile.txt'
-             * let writer = createWriter('newFile.txt');
-             * // write 'Hello world!'' to the file
-             * writer.write(['Hello world!']);
-             * // close the PrintWriter and save the file
-             * writer.close();
-             * </code>
-             * </div>
-             * <div class='norender notest'>
-             * <code>
-             * // creates a file called 'newFile2.txt'
-             * let writer = createWriter('newFile2.txt');
-             * // write 'apples,bananas,123' to the file
-             * writer.write(['apples', 'bananas', 123]);
-             * // close the PrintWriter and save the file
-             * writer.close();
-             * </code>
-             * </div>
-             * <div class='norender notest'>
-             * <code>
-             * // creates a file called 'newFile3.txt'
-             * let writer = createWriter('newFile3.txt');
-             * // write 'My name is: Teddy' to the file
-             * writer.write('My name is:');
-             * writer.write(' Teddy');
-             * // close the PrintWriter and save the file
-             * writer.close();
-             * </code>
-             * </div>
-             */
+
             this.write = function(data) {
               this.content += data;
             };
@@ -70214,32 +70103,7 @@
            *  @param  {String} filename filename for output
            *  @param  {String} [extension] the filename's extension
            *  @example
-           * <div><code>
-           * let words = 'apple bear cat dog';
-           *
-           * // .split() outputs an Array
-           * let list = split(words, ' ');
-           *
-           * function setup() {
-           *   createCanvas(100, 100);
-           *   background(200);
-           *   text('click here to save', 10, 10, 70, 80);
-           * }
-           *
-           * function mousePressed() {
-           *   if (mouseX > 0 && mouseX < width && mouseY > 0 && mouseY < height) {
-           *     saveStrings(list, 'nouns.txt');
-           *   }
-           * }
-           *
-           * // Saves the following to a file called 'nouns.txt':
-           * //
-           * // apple
-           * // bear
-           * // cat
-           * // dog
-           * </code></div>
-           *
+
            * @alt
            * no image displayed
            *
@@ -74009,18 +73873,7 @@
       ],
       54: [
         function(_dereq_, module, exports) {
-          //////////////////////////////////////////////////////////////
 
-          // http://mrl.nyu.edu/~perlin/noise/
-          // Adapting from PApplet.java
-          // which was adapted from toxi
-          // which was adapted from the german demo group farbrausch
-          // as used in their demo "art": http://www.farb-rausch.de/fr010src.zip
-
-          // someday we might consider using "improved noise"
-          // http://mrl.nyu.edu/~perlin/paper445.pdf
-          // See: https://github.com/shiffman/The-Nature-of-Code-Examples-p5.js/
-          //      blob/master/introduction/Noise1D/noise.js
 
           /**
            * @module Math
@@ -76193,31 +76046,6 @@
            * @param  {Number} [max]   the upper bound (exclusive)
            * @return {Number} the random number
            * @example
-           * <div>
-           * <code>
-           * for (let i = 0; i < 100; i++) {
-           *   let r = random(50);
-           *   stroke(r * 5);
-           *   line(50, i, 50 + r, i);
-           * }
-           * </code>
-           * </div>
-           * <div>
-           * <code>
-           * for (let i = 0; i < 100; i++) {
-           *   let r = random(-50, 50);
-           *   line(50, i, 50 + r, i);
-           * }
-           * </code>
-           * </div>
-           * <div>
-           * <code>
-           * // Get a random element from an array using the random(Array) syntax
-           * let words = ['apple', 'bear', 'cat', 'dog'];
-           * let word = random(words); // select random word
-           * text(word, 10, 50); // draw the word
-           * </code>
-           * </div>
            *
            * @alt
            * 100 horizontal lines from center canvas to right. size+fill change each time
@@ -78614,16 +78442,7 @@
            * @param {any} value to be added to the Array
            * @return {Array} the array that was appended to
            * @example
-           * <div class='norender'><code>
-           * function setup() {
-           *   var myArray = ['Mango', 'Apple', 'Papaya'];
-           *   print(myArray); // ['Mango', 'Apple', 'Papaya']
-           *
-           *   append(myArray, 'Peach');
-           *   print(myArray); // ['Mango', 'Apple', 'Papaya', 'Peach']
-           * }
-           * </code></div>
-           */
+
           p5.prototype.append = function(array, value) {
             array.push(value);
             return array;

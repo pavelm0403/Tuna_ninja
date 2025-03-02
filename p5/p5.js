@@ -76193,39 +76193,7 @@
            * @param  {Number} [max]   the upper bound (exclusive)
            * @return {Number} the random number
            * @example
-           * <div>
-           * <code>
-           * for (let i = 0; i < 100; i++) {
-           *   let r = random(50);
-           *   stroke(r * 5);
-           *   line(50, i, 50 + r, i);
-           * }
-           * </code>
-           * </div>
-           * <div>
-           * <code>
-           * for (let i = 0; i < 100; i++) {
-           *   let r = random(-50, 50);
-           *   line(50, i, 50 + r, i);
-           * }
-           * </code>
-           * </div>
-           * <div>
-           * <code>
-           * // Get a random element from an array using the random(Array) syntax
-           * let words = ['apple', 'bear', 'cat', 'dog'];
-           * let word = random(words); // select random word
-           * text(word, 10, 50); // draw the word
-           * </code>
-           * </div>
-           *
-           * @alt
-           * 100 horizontal lines from center canvas to right. size+fill change each time
-           * 100 horizontal lines from center of canvas. height & side change each render
-           * word displayed at random. Either apple, bear, cat, or dog
-           *
-           */
-          /**
+
            * @method random
            * @param  {Array} choices   the array to choose from
            * @return {*} the random element from the array
@@ -78614,16 +78582,7 @@
            * @param {any} value to be added to the Array
            * @return {Array} the array that was appended to
            * @example
-           * <div class='norender'><code>
-           * function setup() {
-           *   var myArray = ['Mango', 'Apple', 'Papaya'];
-           *   print(myArray); // ['Mango', 'Apple', 'Papaya']
-           *
-           *   append(myArray, 'Peach');
-           *   print(myArray); // ['Mango', 'Apple', 'Papaya', 'Peach']
-           * }
-           * </code></div>
-           */
+
           p5.prototype.append = function(array, value) {
             array.push(value);
             return array;
@@ -78839,27 +78798,6 @@
            * @return {Array} the sorted list
            *
            * @example
-           * <div class = 'norender'><code>
-           * function setup() {
-           *   var words = ['banana', 'apple', 'pear', 'lime'];
-           *   print(words); // ['banana', 'apple', 'pear', 'lime']
-           *   var count = 4; // length of array
-           *
-           *   words = sort(words, count);
-           *   print(words); // ['apple', 'banana', 'lime', 'pear']
-           * }
-           * </code></div>
-           * <div class = 'norender'><code>
-           * function setup() {
-           *   var numbers = [2, 6, 1, 5, 14, 9, 8, 12];
-           *   print(numbers); // [2, 6, 1, 5, 14, 9, 8, 12]
-           *   var count = 5; // Less than the length of the array
-           *
-           *   numbers = sort(numbers, count);
-           *   print(numbers); // [1,2,5,6,14,9,8,12]
-           * }
-           * </code></div>
-           */
           p5.prototype.sort = function(list, count) {
             var arr = count ? list.slice(0, Math.min(count, list.length)) : list;
             var rest = count ? list.slice(Math.min(count, list.length)) : [];

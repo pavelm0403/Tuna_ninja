@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Tuna Ninja</title>
+    <link
+      rel="stylesheet"
+      href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css"
+    />
+
+    <!-- STYLE -->
+    <style>
+      body {
+        text-align: center;
+        background: url("images/background.jpg") no-repeat center center;
+        background-size: cover;
+      }
+      .reset-button {
+        padding: 15px 30px;
+        font-size: 18px;
+        color: #fff;
+        background-color: #ff6b6b;
+        border: none;
+        border-radius: 10px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      }
+
+      .reset-button:hover {
+        background-color: #ff4757;
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+        transform: translateY(-3px);
+      }
+
+      .reset-button:active {
+        background-color: #ff4757;
+        transform: translateY(1px);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+      }
+    </style>
+
+    <!-- FAVICON -->
+    <link rel="shortcut icon" href="favicon.png" type="image/x-icon" />
+    <link rel="icon" href="favicon.png" type="image/x-icon" />
+  </head>
+
+  <body>
+    <!-- P5JS LIBRARY -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="p5/p5.js"></script>
+    <script type="text/javascript" src="p5/addons/p5.dom.js"></script>
+    <script type="text/javascript" src="p5/addons/p5.sound.js"></script>
+
+    <!-- JS FILES -->
+    <script src="./js/main.js"></script>
+    <script src="./js/swords.js"></script>
+    <script src="./js/sushi.js"></script>
+  </body>
+</html>

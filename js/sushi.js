@@ -13,16 +13,15 @@ function Sushi(x,y,speed,color,size,sushi,slicedSushi1,slicedSushi2,name){
     this.sliced = false;
     this.visible = true;
 }
-
 Sushi.prototype.draw = function(){
-    fill(this.color);
     if(this.sliced && this.name != 'boom'){
         image(this.slicedSushi1, this.x - 25, this.y, this.size, this.size);
         image(this.slicedSushi2, this.x + 25, this.y, this.size, this.size);
     }else{
-        image(this.sushi, this.x, this.y, this.size, this.size);
+        image(this.sushi, this.x, this.y, this.size * (width / 800), this.size * (height / 635));
     }
 };
+
 
 Sushi.prototype.update = function(){
     if(this.sliced && this.name != 'boom'){
